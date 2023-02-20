@@ -1,0 +1,190 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  header {
+    background-color: #ffe9e9;
+    padding: 20px;
+  }
+  
+  header h1 {
+    font-family: "Segoe UI", sans-serif;
+    font-size: 32px;
+    color: #444;
+    margin: 0;
+  }
+  
+header h1:hover {
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+  
+  h1 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #3e8e41;
+  }
+.rej{
+    background-color: red;
+}
+.rej:hover{
+    background-color: rgb(210, 104, 104);
+}
+  .error {
+    color: red;
+    margin-top: 10px;
+  }
+  form label {
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  
+  form input[type=text], form input[type=number], form input[type=datetime-local] {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 10px;
+    width: 200px;
+    box-sizing: border-box;
+  }
+  
+  form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 30px;
+  }
+  
+  form button:hover {
+    background-color: #45a049;
+  }
+  form{
+    margin: 0 30px;
+  }
+  /* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 600px;
+    position: relative;
+  }
+  
+  /* Close Button */
+  .close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .close:hover {
+    background-color: #aaa;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  #edit-deal-form{
+    margin-top: 30px;
+  }
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: #45a049;
+  }
+  
+  .form-group label{
+    width: 30%;
+  }
+
+  .form-grid label{ 
+   width: 10%;
+  }
+  tr:hover{
+    background: #eef0f2;
+    transition: 0.2s ease all;
+  }
+  .add{
+    border: 1px solid black;
+    margin: 10px 3px;
+  }
+  .pend{
+    margin: 20px 0px;
+  }

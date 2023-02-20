@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lightning Deals</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1 class="head">Admin Panel</h1>
+    </header>
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Deal</h2>
+            <form id="edit-deal-form">
+                <div class="form-group">
+                    <label for="id">ID:</label>
+                    <input type="number" name="id" id="id" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" id="name">
+                </div>
+                <div class="form-group">
+                    <label for="actual-price">Actual Price:</label>
+                    <input type="number" name="actual-price" id="actual-price">
+                </div>
+                <div class="form-group">
+                    <label for="final-price">Final Price:</label>
+                    <input type="number" name="final-price" id="final-price">
+                </div>
+                <div class="form-group">
+                    <label for="total-units">Total Units:</label>
+                    <input type="number" name="total-units" id="total-units">
+                </div>
+                <div class="form-group">
+                    <label for="available-units">Available Units:</label>
+                    <input type="number" name="available-units" id="available-units">
+                </div>
+                <div class="form-group">
+                    <label for="expiry-time">Expiry Time:</label>
+                    <input type="datetime-local" name="expiry-time" id="expiry-time" step="1">
+                </div>
+                <button class="btn">Update Deal</button>
+            </form>
+        </div>
+    </div>
+
+
+    <h1>Available Deals</h1>
+    <table id="deals-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actual Price</th>
+                <th>Final Price</th>
+                <th>Total Units</th>
+                <th>Available Units</th>
+                <th>Expiry Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="deals-table-body">
+        </tbody>
+    </table>
+    <div class="add">
+    <h1>Add New Deals</h1>
+    <form class="form-grid">
+        <label>ID:</label>
+        <input type="text" name="id" /><br>
+        <label>Name:</label>
+        <input type="text" name="name" /><br>
+        <label>Actual Price:</label>
+        <input type="number" name="actualPrice" /><br>
+        <label>Final Price:</label>
+        <input type="number" name="finalPrice" /><br>
+        <label>Total Units:</label>
+        <input type="number" name="totalUnits" /><br>
+        <label>Available Units:</label>
+        <input type="number" name="availableUnits" /><br>
+        <label>Expiry Time:</label>
+        <input type="datetime-local" name="expiryTime" step="1" /><br>
+        <button type="button" onclick="addLightningDeal()">Add</button>
+    </form>
+</div>
+
+<h1 class="pending-approval">Pending Approval</h1>
+<table class="pend">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Product</th>
+      <th>Phone</th>
+      <th>Quantity</th>
+      <th>Action</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody id="pending-approval-body">
+    <!-- Rows will be added dynamically here -->
+  </tbody>
+</table>
+
+    <!-- <form id="order-form">
+      <label for="deal-id">Deal ID:</label>
+      <input type="number" id="deal-id" name="dealId"><br>
+      <label for="quantity">Quantity:</label>
+      <input type="number" id="quantity" name="quantity"><br>
+      <button type="submit" onclick="updateDealsTable()" >Place Order</button>
+    </form> -->
+    <div id="message"></div>
+
+    <script>
+
+
+        function addLightningDeal() {
+            const form = document.querySelector('.form-grid');
+            const formData = new FormData(form);
+
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            console.log("data: ",data);
+            fetch('http://localhost:3000/new', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    console.log(result);
+                    location.reload(); // Reload the page to show the updated table
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+        const dealsTableBody = document.querySelector('#deals-table tbody');
+        const form = document.querySelector('#order-form');
+        const message = document.querySelector('#message');
+
+        function renderDealsTable(deals) {
+            dealsTableBody.innerHTML = '';
+            deals.forEach(deal => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+            <td>${deal.id}</td>
+            <td>${deal.name}</td>
+            <td>${deal.actualPrice}</td>
+            <td>${deal.finalPrice}</td>
+            <td>${deal.totalUnits}</td>
+            <td>${deal.availableUnits}</td>
+            <td>${new Date(deal.expiryTime).toLocaleString()}</td>
+            <td id=${deal.id}><button class="open-modal-btn">Update</button></td>
+          `;
+                dealsTableBody.appendChild(row);
+                const openModalButton = document.getElementById(`${deal.id}`);
+                openModalButton.addEventListener('click', () => {
+                    const row1 = event.target.closest('tr');
+                    const cells = row.querySelectorAll('td');
+                    const id = cells[0].textContent;
+                    const name = cells[1].textContent;
+                    const actualPrice = cells[2].textContent;
+                    const finalPrice = cells[3].textContent;
+                    const totalUnits = cells[4].textContent;
+                    const availableUnits = cells[5].textContent;
+                    const expiryTime = cells[6].textContent;
+                    const date = new Date(expiryTime);
+                    const year = date.getFullYear();
+                    const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+                    const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+                    const hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+                    const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+                    const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+                    const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+
+
+                    // console.log('Deal ID:', id);
+                    // console.log('name ID:', name);
+                    // console.log('actual ID:', actualPrice);
+                    // console.log('final ID:', finalPrice);
+                    // console.log('total ID:', totalUnits);
+                    // console.log('availabe ID:', availableUnits);
+                    // console.log('exp ID:', expiryTime);
+
+
+                    const formIdInput = document.querySelectorAll(".form-group input");
+                    formIdInput[0].value = id;
+                    formIdInput[1].value = name;
+                    formIdInput[2].value = actualPrice;
+                    formIdInput[3].value = finalPrice;
+                    formIdInput[4].value = totalUnits;
+                    formIdInput[5].value = availableUnits;
+                    formIdInput[6].value = formattedDate;
+                    modal.style.display = 'block';
+                });
+
+            });
+        }
+        // Get the modal
+const modal = document.querySelector('.modal');
+const bt = document.querySelector('.btn');
+
+bt.addEventListener('click', (event) => {
+  event.preventDefault();
+  const id = document.querySelector('#id').value;
+  const name = document.querySelector('#name').value;
+  const actualPrice = document.querySelector('#actual-price').value;
+  const finalPrice = document.querySelector('#final-price').value;
+  const totalUnits = document.querySelector('#total-units').value;
+  const availableUnits = document.querySelector('#available-units').value;
+  const expiryTime = document.querySelector('#expiry-time').value;
+ 
+  const data = {
+    id:id,
+    name:name,
+    actualPrice:actualPrice,
+    finalPrice:finalPrice,
+    totalUnits:totalUnits,
+    availableUnits:availableUnits,
+    expiryTime:expiryTime
+  };
+  confirm("Are you sure to update the deal?")
+//    console.log("update data",data);
+   
+   fetch('http://localhost:3000/upd', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    id: id,
+    name: name,
+    actualPrice: actualPrice,
+    finalPrice: finalPrice,
+    totalUnits: totalUnits,
+    availableUnits: availableUnits,
+    expiryTime: expiryTime
+  })
+})
+.then(response => response.text())
+.then(data => location.reload())
+.catch(error => console.error(error));
+
+});
+
+        const closeModalButton = document.querySelector('.close');
+
+
+        closeModalButton.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', event => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        function updateDealsTable() {
+            fetch('http://localhost:3000/deals')
+                .then(response => response.json())
+                .then(deals => renderDealsTable(deals))
+                .catch(error => console.error(error));
+        }
+        document.addEventListener("onload", updateDealsTable());
+
+// Make a GET request to retrieve the list of orders
+
+fetch('http://localhost:3000/ord')
+  .then(response => response.json())
+  .then(orders => getord(orders))
+  .catch(error => {
+    console.error('Error retrieving orders:', error);
+  });
+  function getord(orders){
+    const tableBody = document.getElementById('pending-approval-body');
+
+// Clear any existing rows
+tableBody.innerHTML = '';
+orders.forEach(deal => {
+    if(deal.status === "Pending"){
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+        <td>${deal.id}</td>
+        <td>${deal.name}</td>
+        <td>${deal.email}</td>
+        <td>${deal.product}</td>
+        <td>${deal.phone}</td>
+        <td>${deal.quantity}</td>
+        <td><button id='order-${deal.id}' class='aprrej'>Approve</button></td>
+        <td><button id='order-${deal.id}' class='rej aprrej'>Reject</button></td>
+      `;
+      tableBody.appendChild(row);
+    //   fo = document.querySelector(`#pending-approval-body`);
+      ap = document.querySelectorAll(`#order-${deal.id}`);
+      ap.forEach(ids =>{
+        id = ids.id.split('-')[1];
+        ids.addEventListener('click',()=>appr(id,deal.quantity,ids.textContent,deal.phone));
+      })
+    // console.log(ap)
+}
+})
+}  
+
+  function appr(apprID,quant,status,phone){
+    const dealId = apprID;
+    const quantity = quant;
+    console.log(typeof( apprID),typeof( quant),typeof( status),phone);
+    fetch('http://localhost:3000/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    dealId: String(apprID),
+                    quantity: String(quant)
+                })
+            })
+                .then(response => {
+                    console.log(response);
+                    if (response.ok) {
+                        // alert(`Order ${status}`)
+                        // location.reload();
+                    } else if (response.status === 404) {
+                        console.log('Deal not found');
+                    } else if (response.status === 400) {
+                        console.log('Order could not be placed: ' + response.statusText);
+                    } else {
+                        console.log('An error occurred: ' + response.statusText);
+                    }
+                })
+                .catch(error => {
+                   console.log(error);
+                });
+     // updating the user status
+     fetch('http://localhost:3000/updStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: apprID,
+                    status: status,
+                    phone: phone
+                })
+            })
+            .then(response => {
+                    console.log(response);
+                    if (response.ok) {
+                        
+                        console.log("success")
+                    } else if (response.status === 404) {
+                        console.log('Deal not found');
+                    } else if (response.status === 400) {
+                        console.log('Order could not be placed: ' + response.statusText);
+                    } else {
+                        console.log('An error occurred: ' + response.statusText);
+                    }
+                })
+                .catch(error => {
+                   console.log(error);
+                });
+                alert(`Order ${status}`);
+                location.reload();
+  }
+        // form.addEventListener('submit', (event) => {
+        //     event.preventDefault();
+
+        //     const dealId = form.elements.dealId.value;
+        //     const quantity = form.elements.quantity.value;
+        //     console.log(dealId, quantity);
+        //     fetch('http://localhost:3000/orders', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify({
+        //             dealId: dealId,
+        //             quantity: quantity
+        //         })
+        //     })
+        //         .then(response => {
+        //             console.log(response);
+        //             if (response.ok) {
+        //                 message.textContent = 'Order placed successfully';
+        //                 message.style.color = 'green';
+        //             } else if (response.status === 404) {
+        //                 message.textContent = 'Deal not found';
+        //                 message.style.color = 'red';
+        //             } else if (response.status === 400) {
+        //                 message.textContent = 'Order could not be placed: ' + response.statusText;
+        //                 message.style.color = 'red';
+        //             } else {
+        //                 message.textContent = 'An error occurred: ' + response.statusText;
+        //                 message.style.color = 'red';
+        //             }
+        //         })
+        //         .catch(error => {
+        //             message.textContent = 'An error occurred: ' + error.message;
+        //             message.style.color = 'red';
+        //         });
+        // });
+    </script>
+</body>
+
+</html>
