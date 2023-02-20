@@ -1,12 +1,13 @@
 
 # Lightning-Deals-API
 
+The Lightning Deals API is a Node.js application that allows users to create and manage deals, place orders, and view available deals. The application includes two modules: admin and user.
 
-There are 2 modules here admin and User
+The admin module is designed for the administrator of the application. Admins can create and update deals, as well as approve or reject orders placed by users. Admins can also view all orders and update the status of each order.
 
-Admin can add deals, update deals and accept orders from User.
+The user module is designed for users who wish to view available deals and place orders. Users can only view deals that are currently available. When a user places an order, the order is sent to the admin for approval. If the admin approves the order, the quantity of the ordered item will be reduced.
 
-
+The application uses Node.js and is built using a RESTful API architecture. The API endpoints are designed to handle CRUD operations for deals and orders. The user interface is built using HTML and CSS, and includes pages for managing deals, orders, and users. 
 
 
 ## Run Locally
