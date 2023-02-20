@@ -48,7 +48,11 @@ Open these live pages to use the API. Make sure the server is running in your lo
 - Users can see only available deals and place order with required quantity.
 - Once the order is placed a record will be created for the user.
 - When the Admin Accepts/Rejects user will able to see the status.
+- The quantity of the ordered item will be reduced when the admin approves the order.
 
+## Demo
+
+https://user-images.githubusercontent.com/75574024/220180781-b540df1e-bfe2-4d5a-bd87-9477fb0166e0.mp4
 
 ## Screenshots
 
