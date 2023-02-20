@@ -37,11 +37,10 @@ Start the server
 ### Make sure Node JS is installed 
 #### When the server is working
 
-```bash
   [Admin](https://mdaaquib-01.github.io/Lightning-Deals-API/index.html)
 
   [User](https://mdaaquib-01.github.io/Lightning-Deals-API/new.html)
-```
+
 Open these live pages to use the API. Make sure the server is running in your local machine.
 ## Features
 
